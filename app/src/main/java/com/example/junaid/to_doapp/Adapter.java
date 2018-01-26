@@ -30,16 +30,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.AdapterViewHolder> {
     }
     @Override
     public Adapter.AdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = layoutInflater.inflate(R.layout.activity_main2,parent,false);
+        View itemView = layoutInflater.inflate(R.layout.notes_list,parent,false);
         AdapterViewHolder adapterViewHolder = new AdapterViewHolder(itemView);
         return adapterViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(Adapter.AdapterViewHolder holder, int position) {
-        Cursor cursor = db.getNotesData(name);
-        cursor.moveToFirst();
-        holder.tv1.setText(cursor.getString(cursor.getColumnIndex(DBHelper.NOTES)).toString());
+    public void onBindViewHolder(Adapter.AdapterViewHolder holder,final int position) {
+        holder.tv1.setText(user_notes.get(position).get_notes());
     }
 
     public void insertItem (int position, User_notes user_note) {

@@ -7,10 +7,6 @@ public class User_notes {
     private String User_name;
     private String Notes;
 
-    public User_notes ()
-    {
-
-    }
     public User_notes (String user_id, String Notes)
     {
         this.User_name = user_id;
@@ -24,4 +20,5 @@ public class User_notes {
     {
         this.Notes = Notes;
     }
+    public String get_notes(){ return this.Notes;}
 }

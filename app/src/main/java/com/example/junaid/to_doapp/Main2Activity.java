@@ -1,6 +1,6 @@
 package com.example.junaid.to_doapp;
 
-import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,20 +31,29 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         user_notes = new ArrayList<User_notes>();
         rv = (RecyclerView) findViewById(R.id.rv1);
         adapter = new Adapter(this, user_notes, getIntent().getStringExtra("name"));
-        create_note_text = (EditText) findViewById(R.id.editText3);
+        create_note_text = (EditText) findViewById(R.id.note_text);
         rv.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv.setLayoutManager(linearLayoutManager);
         tvNotesNumber.setText("Welcome " + getIntent().getStringExtra("name"));
+
+        Cursor cursor = db.getNotesData(getIntent().getStringExtra("name"));
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i = 0 ;i < cursor.getCount(); i++) {
+                String notes = cursor.getString(cursor.getColumnIndex(DBHelper.NOTES));
+                User_notes user_notes2 = new User_notes(getIntent().getStringExtra("name"), notes);
+                adapter.insertItem(user_notes.size(), user_notes2);
+                cursor.moveToNext();
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
-        User_notes user_notes2 = new User_notes();
-        user_notes2.set_Notes(create_note_text.getText().toString());
-        user_notes2.setUserName(getIntent().getStringExtra("name"));
-        adapter.insertItem(user_notes.size(), user_notes2);
         db.insertNoteUser(create_note_text.getText().toString(), getIntent().getStringExtra("name"));
+
+
     }
 }
